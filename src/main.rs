@@ -13,7 +13,6 @@
     clippy::single_call_fn,
     clippy::allow_attributes_without_reason,
     clippy::infinite_loop,
-    clippy::print_stdout,
     clippy::allow_attributes
 )]
 
@@ -23,13 +22,10 @@ use tokio::{
     spawn,
 };
 
-const HOST: &str = "localhost";
-const PORT: &str = "8000";
-const PORT_SEPARATOR: &str = ":";
+
 #[tokio::main(flavor = "multi_thread")]
 async fn main() {
-    let tcp_url = format!("{HOST}{PORT_SEPARATOR}{PORT}");
-    let listener = TcpListener::bind(tcp_url).await.unwrap();
+    let listener = TcpListener::bind("localhost:8000").await.unwrap();
     loop {
         #[allow(unused_mut)]
         let (mut socket, _ip) = listener.accept().await.unwrap();
@@ -44,8 +40,6 @@ async fn handle_connection(mut socket: TcpStream) {
             Ok(0) | Err(_) => break,
             Ok(_) => {}
         }
-        println!("5");
         socket.write_all(&buffer).await.unwrap();
-        println!("6");
     }
 }
