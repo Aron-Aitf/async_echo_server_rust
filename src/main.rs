@@ -22,13 +22,9 @@ use tokio::{
     spawn,
 };
 
-const HOST: &str = "localhost";
-const PORT: &str = "8000";
-const PORT_SEPARATOR: &str = ":";
 #[tokio::main(flavor = "multi_thread")]
 async fn main() {
-    let tcp_url = format!("{HOST}{PORT_SEPARATOR}{PORT}");
-    let listener = TcpListener::bind(tcp_url).await.unwrap();
+    let listener = TcpListener::bind("localhost:8000").await.unwrap();
     loop {
         #[allow(unused_mut)]
         let (mut socket, _ip) = listener.accept().await.unwrap();
